@@ -1,32 +1,20 @@
-import React, { useState } from "react";
-import ItemForm from "./ItemForm";
-import Filter from "./Filter";
+// ShoppingList.js
+import React from "react";
 import Item from "./Item";
+import NewItemForm from "./NewItemForm";
 
-function ShoppingList() {
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [items, setItems] = useState([]);
-
-  function handleCategoryChange(category) {
-    setSelectedCategory(category);
-  }
-
-  const itemsToDisplay = items.filter((item) => {
-    if (selectedCategory === "All") return true;
-
-    return item.category === selectedCategory;
-  });
-
+function ShoppingList({ items, onAddItem, onUpdateItem, onDeleteItem }) {
   return (
     <div className="ShoppingList">
-      <ItemForm />
-      <Filter
-        category={selectedCategory}
-        onCategoryChange={handleCategoryChange}
-      />
+      <NewItemForm onAddItem={onAddItem} />
       <ul className="Items">
-        {itemsToDisplay.map((item) => (
-          <Item key={item.id} item={item} />
+        {items.map((item) => (
+          <Item
+            key={item.id}
+            item={item}
+            onUpdateItem={onUpdateItem}
+            onDeleteItem={onDeleteItem}
+          />
         ))}
       </ul>
     </div>

@@ -1,11 +1,35 @@
+// NewItemForm.js
 import React, { useState } from "react";
 
-function ItemForm() {
+function NewItemForm({ onAddItem }) {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("Produce");
 
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const newItem = {
+      name,
+      category,
+      isInCart: false,
+    };
+
+    fetch("http://localhost:4000/items", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newItem),
+    })
+      .then((response) => response.json())
+      .then((data) => onAddItem(data));
+
+    setName("");
+    setCategory("Produce");
+  }
+
   return (
-    <form className="NewItem">
+    <form className="NewItemForm" onSubmit={handleSubmit}>
       <label>
         Name:
         <input
@@ -34,4 +58,4 @@ function ItemForm() {
   );
 }
 
-export default ItemForm;
+export default NewItemForm;
